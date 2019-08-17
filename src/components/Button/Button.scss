@@ -1,0 +1,7 @@
+.button {
+    // important потому что стили библиотеки antd перекрывают эти
+    // &--large - добавление к классу button--large по стилю БЭМ типо хз
+    &--large {
+        height: 56px !important;
+    }
+}
