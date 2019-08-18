@@ -1,6 +1,6 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Остановился на 2 части https://www.youtube.com/channel/UCdldbhAwO16vjnDwACTs5gQ 1:18:37
+Остановился на 2 части https://www.youtube.com/channel/UCdldbhAwO16vjnDwACTs5gQ 1:50:00
 GIT проекта автора: https://github.com/Archakov06/react-chat-tutorial
 
 ### `yarn`
