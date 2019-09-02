@@ -77,7 +77,7 @@ const Home = () => (
     <Message
       avatar="https://sun2.velcom-by-minsk.userapi.com/c849428/v849428171/1ae02f/Qerht2ksCGY.jpg?ava=1"
       date={new Date("Wed Aug 28 2019 14:20:05")}
-      audio="https://notificationsounds.com/soundfiles/b534ba68236ba543ae44b22bd110a1d6/file-sounds-875-surprise-on-a-spring.mp3"
+      audio="https://notificationsounds.com/soundfiles/38913e1d6a7b94cb0f55994f679f5956/file-6c_early-sunrise-song.mp3"
     />
   </section>
 );
