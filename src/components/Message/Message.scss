@@ -85,6 +85,7 @@
       text-align: right;
     }
 
+    // #{$self}__bubble = у элемента будет такой класс .message--isme .message__bubble
     // если есть класс message--isme, то перетираем свойства у message__bubble - #{} это такой синтаксис, не обращение к id
     #{$self}__bubble {
       background: #fff;
@@ -103,6 +104,53 @@
       background-color: $message-typing-blue;
       box-shadow: 0px 5px 5px rgba(54, 116, 255, 0.04);
       padding: 15px 18px;
+    }
+  }
+
+  &--is-audio {
+    audio {
+      display: none;
+    }
+    #{$self}__bubble {
+      width: 280px;
+      position: relative;
+      overflow: hidden;
+    }
+    #{$self}__audio {
+      &-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative; // audio-info выже по приоритету чем progess
+      }
+      &-btn {
+        button {
+          cursor: pointer;
+          border: 0;
+          width: 28px;
+          height: 28px;
+          border-radius: 30px;
+          background: #0f3997;
+          img {
+            height: 13px;
+          }
+        }
+      }
+      &-duration {
+        color: #fff;
+        font-weight: 500;
+        opacity: 0.5;
+        font-size: 12px;
+      }
+      &-progress {
+        width: 40%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        position: absolute;
+        background-color: #418fff;
+    //     transition: width 0.3s ease;
+      }
     }
   }
 
