@@ -1,18 +1,25 @@
-@import '~reset-css';
-@import '~antd/dist/antd.css';
+@import "~reset-css";
+@import "~antd/dist/antd.css";
+
+@import "layouts/chat";
+
+body {
+  background-color: #f4f7fd;
+}
 
 body,
 html,
-#root, 
+#root,
 .wrapper {
-    height: 100%;
-    // пишем потому что @import '~reset-css' перекрыл стили
-    color: #202020;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-    font-size: 14px;
+  height: 100%;
+  // пишем потому что @import '~reset-css' перекрыл стили
+  color: #202020;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 14px;
 }
 
 * {
-    // при клике на элемент, повявляется конутр, значение 0 убирает его
-    outline: 0;
+  // при клике на элемент, повявляется контур, значение 0 убирает его
+  outline: 0;
 }
