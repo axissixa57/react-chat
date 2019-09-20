@@ -7,7 +7,6 @@ import './Auth.scss';
 
 class Auth extends React.Component {
     render() {
-        // type='primary' size='large' - это всё библиотека antd
         return (
             <section className="auth">
                 <div className="auth__content">

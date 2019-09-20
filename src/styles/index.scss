@@ -23,3 +23,18 @@ html,
   // при клике на элемент, повявляется контур, значение 0 убирает его
   outline: 0;
 }
+
+.ant-btn-circle {
+  // border: 0;
+  // box-shadow: none;
+  color: #202020 !important;
+  opacity: 0.4;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  // &:after {
+  //   display: none;
+  // }
+}
