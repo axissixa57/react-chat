@@ -6,7 +6,7 @@ import waveSvg from "../../assets/img/wave.svg";
 import playSvg from "../../assets/img/play.svg";
 import pauseSvg from "../../assets/img/pause.svg";
 
-import { Time, IconReaded } from "../";
+import { Time, IconReaded, Avatar } from "../";
 import { convertCurrentTime } from "../../utils/helpers";
 
 import "./Message.scss";
@@ -111,7 +111,7 @@ const Message = ({
       <div className="message__content">
         <IconReaded isMe={isMe} isReaded={isReaded} />
         <div className="message__avatar">
-          <img src={avatar} alt={`Avatar ${user.fullName}`} />
+          <Avatar user={user} />
         </div>
         <div>
           <div className="message__info">

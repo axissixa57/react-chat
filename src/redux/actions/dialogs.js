@@ -1,13 +1,17 @@
-import { dialogs as dialogsApi } from "../../utils/api";
+import { dialogsApi } from "../../utils/api";
 
 const actions = {
   setDialogs: items => ({
-      type: 'DIALOGS:SET_ITEMS',
-      payload: items
+    type: "DIALOGS:SET_ITEMS",
+    payload: items
+  }),
+  setCurrentDialogId: id => ({
+    type: "DIALOGS:SET_CURRENT_DIALOG_ID",
+    payload: id
   }),
   fetchDialogs: () => dispatch => {
     dialogsApi.getAll().then(({ data }) => {
-        dispatch(actions.setDialogs(data));
+      dispatch(actions.setDialogs(data));
     });
   }
 };
