@@ -18,11 +18,11 @@
     }
   }
 
-//   &__emoji-picker {
-//     position: absolute;
-//     bottom: 50px;
-//     z-index: 1;
-//   }
+  &__emoji-picker {
+    position: absolute;
+    bottom: 50px;
+    z-index: 1;
+  }
 
   &__actions {
     display: flex;
@@ -31,17 +31,17 @@
     justify-content: space-between;
     margin-left: 15px;
 
-//     &-upload-btn {
-//       cursor: pointer;
-//       input {
-//         cursor: pointer;
-//       }
-//       &:hover {
-//         button {
-//           opacity: 1;
-//         }
-//       }
-//     }
+    &-upload-btn { // т.к. import { UploadField } from "@navjobs/upload" применяет свои стили, мы их переопределяем под свои нужды
+      cursor: pointer;
+      input {
+        cursor: pointer;
+      }
+      &:hover {
+        button {
+          opacity: 1;
+        }
+      }
+    }
   }
 
   input {

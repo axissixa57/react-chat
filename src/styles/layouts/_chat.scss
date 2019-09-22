@@ -42,11 +42,6 @@
           padding: 10px 20px;
           margin-bottom: 0;
           cursor: pointer;
-
-          &.active,
-          &:hover {
-            background-color: #f3f7ff;
-          }
         }
       }
     }
@@ -90,8 +85,6 @@
     }
 
     &-messages {
-      padding: 20px;
-      overflow: auto;
       height: calc(100% - 138px); // для того чтобы корректно вместился блок, кот. стоит после chat__dialog-messages
     }
   }
