@@ -1,41 +1,68 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+﻿This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Остановился на 2 части https://www.youtube.com/channel/UCdldbhAwO16vjnDwACTs5gQ 1:50:00
-GIT проекта автора: https://github.com/Archakov06/react-chat-tutorial
+## Available Scripts
 
-### `yarn`
+In the project directory, you can run:
 
-yarn add node-sass - нужен для того чтобы работать с scss стилями
-yarn add react-styleguidist - библиотека компонентов, для взаимодействия дизайнера и программиста 
-yarn add antd - https://ant.design/
-yarn add classnames - библиотека для скрепления классов require('classnames')('foo', 'bar'); // => 'foo bar'
-yarn add date-fns - для работы с датой, хороша тем, что используется декларативный подход, т.е. позволяет взять конкретную ф-цию из библиотеки, а не полное подключение, что хорошо скажется на размере bundle из webpack
-yarn add reset-css - для очистки стандартных стилей применённых браузером
+### `npm start`
 
-### `npx`
+Runs the app in the development mode.<br>
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-npx styleguidist server - для отображения библиотека компонентов - http://localhost:6060/
+The page will reload if you make edits.<br>
+You will also see any lint errors in the console.
 
-### `components`
+### `npm test`
 
-файл index.js - точка для подключения всех компонентов
+Launches the test runner in the interactive watch mode.<br>
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `Front`
+### `npm run build`
 
-https://ant.design/ - типо bootstrap (можно ещё рассмотреть https://material-ui.com/)
+Builds the app for production to the `build` folder.<br>
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-### scss 
+The build is minified and the filenames include the hashes.<br>
+Your app is ready to be deployed!
 
-_variables.scss - файл, кот. нужен для хранения переменных со значением, кот. будут использоваться в других файлах через @import 
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### webpack 
-...
-alias: {
-    styles: path.join(paths.appSrc, 'styles') 
+### `npm run eject`
 
-    <!-- - вставляем доп. строчку для удобного обращения к файлам scss:
-    - @import '~styles/variables'; 
-    вместо, например @import '../../styles/variables';
-    Для применения изменения : перезагружка npm start -->
-}
-...
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+
+### Analyzing the Bundle Size
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+
+### Making a Progressive Web App
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+
+### Advanced Configuration
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+
+### Deployment
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+
+### `npm run build` fails to minify
+
+This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
