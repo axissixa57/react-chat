@@ -8,9 +8,14 @@ import {
   MessageController
 } from "./controllers";
 
+import { updateLastSeen, checkAuth } from "./middleware";
+import { loginValidation } from './utils/validations';
+
 const app = express();
 
 app.use(express.json());
+app.use(updateLastSeen);
+app.use(checkAuth);
 
 const User = new UserController();
 const Dialog = new DialogController();
@@ -33,6 +38,7 @@ mongoose.connect(
 app.get("/user/:id", User.show);
 app.delete("/user/:id", User.delete);
 app.post("/user/registration", User.create);
+app.post('/user/login', loginValidation, User.login);
 
 app.get("/dialogs", Dialog.index);
 app.delete("/dialogs/:id", Dialog.delete);
@@ -43,5 +49,5 @@ app.post("/messages", Message.create);
 app.delete("/messages/:id", Message.delete);
 
 app.listen(process.env.PORT, () =>
-  console.log(`Example app listening on port ${process.env.PORT}!`)
+  console.log(`Server: http://localhost:${process.env.PORT}`)
 );
