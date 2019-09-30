@@ -1,7 +1,7 @@
 import express from "express";
 import { UserModel } from "../models";
 
-export default (
+export default ( // обновление последней даты посщения чата
   req: express.Request,
   res: express.Response,
   next: express.NextFunction

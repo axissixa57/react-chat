@@ -1,10 +1,17 @@
 import express from "express";
+import socket from "socket.io";
+
 import { DialogModel, MessageModel } from "../models";
 
 class DialogController {
-  index(req: express.Request, res: express.Response) {
-    const authorId = "5d89cc08661bfb3aa4c804e2";
-    // const authorId: string = req.params.id;
+  io: socket.Server;
+
+  constructor(io: socket.Server) {
+    this.io = io;
+  }
+  
+  index(req: any, res: express.Response) { // все диалоги пользователя по ид
+    const authorId = req.user._id; // в checkAuth.js придёт объект пользователя
 
     DialogModel.find({ author: authorId })
       .populate(["author", "partner"]) // по id author, partner в DialogModel найдет их объекты со всеми значениями

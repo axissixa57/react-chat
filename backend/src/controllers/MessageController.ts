@@ -1,7 +1,15 @@
 import express from "express";
+import socket from "socket.io";
+
 import { MessageModel } from "../models";
 
 class MessageController {
+  io: socket.Server;
+
+  constructor(io: socket.Server) {
+    this.io = io;
+  }
+
   index(req: express.Request, res: express.Response) { // поиск сообщений по кокретному id dialog
     const dialogId: string = req.query.dialog;
 
@@ -17,8 +25,8 @@ class MessageController {
       });
   }
 
-  create(req: express.Request, res: express.Response) {
-    const userId = "5d89cc08661bfb3aa4c804e2";
+  create(req: any, res: express.Response) {
+    const userId = req.user._id;
 
     const postData = {
       text: req.body.text,

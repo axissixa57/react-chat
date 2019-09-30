@@ -1,11 +1,18 @@
 import express from "express";
 import { validationResult } from "express-validator";
-import bcrypt from 'bcrypt';
+import bcrypt from "bcrypt";
+import socket from "socket.io";
 
 import { UserModel } from "../models";
 import { createJWToken } from "../utils";
 
 class UserController {
+  io: socket.Server;
+
+  constructor(io: socket.Server) {
+    this.io = io;
+  }
+
   show(req: express.Request, res: express.Response) {
     const id: string = req.params.id;
     UserModel.findById(id, (err, user) => {
@@ -18,9 +25,17 @@ class UserController {
     });
   }
 
-  getMe() {
-    // TODO: Сделать возвращение инфы о самом себе (аутентификация)
-  }
+  getMe = (req: any, res: express.Response) => {
+    const id: string = req.user._id;
+    UserModel.findById(id, (err, user) => {
+      if (err) {
+        return res.status(404).json({
+          message: "User not found"
+        });
+      }
+      res.json(user);
+    });
+  };
 
   create(req: express.Request, res: express.Response) {
     const user = new UserModel(req.body);
@@ -69,13 +84,13 @@ class UserController {
       if (bcrypt.compareSync(password, user.password)) {
         const token = createJWToken(user);
         res.json({
-          status: 'success',
-          token,
+          status: "success",
+          token
         });
       } else {
         res.json({
-          status: 'error',
-          message: 'Incorrect password or email',
+          status: "error",
+          message: "Incorrect password or email"
         });
       }
     });
