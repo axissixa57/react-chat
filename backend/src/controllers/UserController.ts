@@ -1,5 +1,6 @@
 import express from "express";
 import { validationResult } from "express-validator";
+import bcrypt from 'bcrypt';
 
 import { UserModel } from "../models";
 import { createJWToken } from "../utils";
@@ -53,7 +54,7 @@ class UserController {
   login(req: express.Request, res: express.Response) {
     const { email, password } = req.body;
 
-    const errors = validationResult(req); // из документации
+    const errors = validationResult(req); // из документации, если указать при запросе вместо email - login, то будет ошибка
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     } // из документации
@@ -65,11 +66,18 @@ class UserController {
         });
       }
 
-      const token = createJWToken(user);
-      res.json({
-        status: "success",
-        token
-      });
+      if (bcrypt.compareSync(password, user.password)) {
+        const token = createJWToken(user);
+        res.json({
+          status: 'success',
+          token,
+        });
+      } else {
+        res.json({
+          status: 'error',
+          message: 'Incorrect password or email',
+        });
+      }
     });
   }
 }
