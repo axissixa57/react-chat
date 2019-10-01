@@ -75,7 +75,7 @@ class UserController {
     } // из документации
 
     UserModel.findOne({ email }, (err, user: any) => {
-      if (err) {
+      if (err || !user) { // если юзера нет в базе
         return res.status(404).json({
           message: "User not found"
         });

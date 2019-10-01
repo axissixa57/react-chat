@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { dialogsActions } from "../redux/actions";
 import { Dialogs as BaseDialogs } from "../components";
 
-const Dialogs = ({ items, userId, setCurrentDialogId, currentDialogId, fetchDialogs }) => { // setCurrentDialog - из dialogsActions
+const Dialogs = ({ items, userId, setCurrentDialogId, currentDialogId, fetchDialogs }) => { // setCurrentDialogId, fetchDialogs - из dialogsActions
   const [inputValue, setValue] = useState(""); // state для отображения значения input-a ввода
   const [filtred, setFiltredItems] = useState(Array.from(items)); // state для фильтрации значений из массива
 

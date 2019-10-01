@@ -34,3 +34,7 @@ alias: {
     Для применения изменения : перезагружка npm start -->
 }
 ...
+
+### package.json
+
+"proxy": "http://localhost:3333", - для перенанравления с адреса, кот. определён в axios.baseURL - http://localhost:3000 на http://localhost:3333

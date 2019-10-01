@@ -1,30 +1,40 @@
 import { withFormik } from "formik";
+import { connect } from "react-redux";
 
-import LoginForm from '../components/LoginForm';
-import validateForm from '../../../utils/validate';
+import LoginForm from "../components/LoginForm";
+import validateForm from "../../../utils/validate";
+import { userActions } from "../../../redux/actions";
 
-export default withFormik({
-    enableReinitialize: true,
-    // пустые поля нужны для того чтобы когда делаем фокус на input-e, чтобы выскачила ошибка, без пустых полей будет как success
-    mapPropsToValues: () => ({
-        email: "",
-        password: ""
-    }),
+const LoginFormContainer = withFormik({
+  enableReinitialize: true,
+  // пустые поля нужны для того чтобы когда делаем фокус на input-e, чтобы выскачила ошибка, без пустых полей будет как success
+  mapPropsToValues: () => ({
+    email: "",
+    password: ""
+  }),
 
-    validate: values => {
-        let errors = {};
+  validate: values => {
+    let errors = {};
+    validateForm({ isAuth: true, values, errors });
+    return errors;
+  },
 
-        validateForm({ isAuth: true, values, errors });
+  handleSubmit: (values, { setSubmitting, props }) => {
+    const { fetchUserLogin } = props;
 
-        return errors;
-    },
+    fetchUserLogin(values)
+      .then(() => {
+        setSubmitting(false);
+      })
+      .catch(() => {
+        setSubmitting(false);
+      });
+  },
 
-    handleSubmit: (values, { setSubmitting }) => {
-        setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-        }, 1000);
-    },
-
-    displayName: "LoginForm"
+  displayName: "LoginForm"
 })(LoginForm);
+
+export default connect(
+  null,
+  userActions
+)(LoginFormContainer);
