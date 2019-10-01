@@ -8,7 +8,7 @@ import "./Home.scss";
 
 const Home = () => (
   <section className="home">
-    <div className="chat">
+    <div className="chat"> 
       <div className="chat__sidebar">
         <div className="chat__sidebar-header">
           <div>

@@ -1,24 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-// export interface IDialog extends Document {
-//   partner: {
-//     type: Schema.Types.ObjectId;
-//     // ref: string;
-//     // require: true;
-//   };
-//   author: {
-//     type: Schema.Types.ObjectId;
-//     // ref: string;
-//     // require: true;
-//   };
-//   messages: [
-//     {
-//       type: Schema.Types.ObjectId;
-//       // ref: string;
-//     }
-//   ];
-// }
-
 export interface IDialog extends Document {
   partner: Schema.Types.ObjectId;
   author: Schema.Types.ObjectId;

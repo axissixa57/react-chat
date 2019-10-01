@@ -1,7 +1,7 @@
 import express from "express";
 import socket from "socket.io";
 
-import { MessageModel } from "../models";
+import { MessageModel, DialogModel } from "../models";
 
 class MessageController {
   io: socket.Server;
@@ -10,7 +10,8 @@ class MessageController {
     this.io = io;
   }
 
-  index(req: express.Request, res: express.Response) { // поиск сообщений по кокретному id dialog
+  index = (req: express.Request, res: express.Response) => {
+    // поиск сообщений по кокретному id dialog
     const dialogId: string = req.query.dialog;
 
     MessageModel.find({ dialog: dialogId })
@@ -23,9 +24,9 @@ class MessageController {
         }
         return res.json(messages);
       });
-  }
+  };
 
-  create(req: any, res: express.Response) {
+  create = (req: any, res: express.Response) => {
     const userId = req.user._id;
 
     const postData = {
@@ -39,14 +40,38 @@ class MessageController {
     message
       .save()
       .then((obj: any) => {
-        res.json(obj);
+        obj.populate(["dialog", "user"], (err: any, message: any) => {
+          if (err) {
+            return res.status(500).json({
+              status: "error",
+              message: err
+            });
+          }
+
+          DialogModel.findOneAndUpdate(
+            { _id: postData.dialog },
+            { lastMessage: message._id },
+            function(err) {
+              if (err) {
+                return res.status(500).json({
+                  status: "error",
+                  message: err
+                });
+              }
+            }
+          );
+
+          res.json(message);
+
+          this.io.emit("SERVER:NEW_MESSAGE", message);
+        });
       })
       .catch(err => {
         res.json(err);
       });
-  }
+  };
 
-  delete(req: express.Request, res: express.Response) {
+  delete = (req: express.Request, res: express.Response) => {
     const id: string = req.params.id;
     MessageModel.findOneAndRemove({ _id: id })
       .then(message => {
@@ -61,7 +86,7 @@ class MessageController {
           message: `Message not found`
         });
       });
-  }
+  };
 }
 
 export default MessageController;

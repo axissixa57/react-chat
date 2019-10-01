@@ -13,7 +13,7 @@ class UserController {
     this.io = io;
   }
 
-  show(req: express.Request, res: express.Response) {
+  show = (req: express.Request, res: express.Response) => {
     const id: string = req.params.id;
     UserModel.findById(id, (err, user) => {
       if (err) {
@@ -37,7 +37,7 @@ class UserController {
     });
   };
 
-  create(req: express.Request, res: express.Response) {
+  create = (req: express.Request, res: express.Response) => {
     const user = new UserModel(req.body);
     user
       .save()
@@ -49,7 +49,7 @@ class UserController {
       });
   }
 
-  delete(req: express.Request, res: express.Response) {
+  delete = (req: express.Request, res: express.Response) => {
     const id: string = req.params.id;
     UserModel.findOneAndRemove({ _id: id })
       .then(user => {
@@ -66,7 +66,7 @@ class UserController {
       });
   }
 
-  login(req: express.Request, res: express.Response) {
+  login = (req: express.Request, res: express.Response) => {
     const { email, password } = req.body;
 
     const errors = validationResult(req); // из документации, если указать при запросе вместо email - login, то будет ошибка

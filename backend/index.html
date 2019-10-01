@@ -16,7 +16,7 @@
             const socket = io("http://localhost:3000");
 
             socket.on("SERVER:NEW_MESSAGE", function (msg) {
-                console.log(msg);
+                console.log('new message from server:', msg);
             });
         };
     </script>

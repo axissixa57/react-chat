@@ -10,7 +10,7 @@ class DialogController {
     this.io = io;
   }
   
-  index(req: any, res: express.Response) { // все диалоги пользователя по ид
+  index = (req: any, res: express.Response) => { // все диалоги пользователя по ид
     const authorId = req.user._id; // в checkAuth.js придёт объект пользователя
 
     DialogModel.find({ author: authorId })
@@ -25,9 +25,9 @@ class DialogController {
       });
   }
 
-  create(req: express.Request, res: express.Response) {
+  create = (req: express.Request, res: express.Response) => {
     const { author, partner, text } = req.body;
-    const dialog = new DialogModel({ author, partner });
+    const dialog = new DialogModel({ author, partner }); // lastMessage: text
 
     dialog
       .save()
@@ -52,7 +52,7 @@ class DialogController {
       });
   }
 
-  delete(req: express.Request, res: express.Response) {
+  delete = (req: express.Request, res: express.Response) => {
     const id: string = req.params.id;
     DialogModel.findOneAndRemove({ _id: id })
       .then(dialog => {

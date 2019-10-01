@@ -1,21 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-// export interface IMessage extends Document {
-//   text: {
-//     type: string;
-//     // require: boolean;
-//   };
-//   dialog: {
-//     type: Schema.Types.ObjectId;
-//     // ref: string;
-//     // require: true;
-//   };
-//   unread: {
-//     type: boolean;
-//     // defaul: boolean;
-//   };
-// }
-
 export interface IMessage extends Document {
   user: Schema.Types.ObjectId;
   text: string;
