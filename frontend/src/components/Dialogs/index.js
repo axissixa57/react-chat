@@ -22,7 +22,7 @@ const Dialogs = ({ items, userId, onSearch, inputValue, currentDialogId, onSelec
         onSelect={onSelectDialog}
         key={item._id}
         // проверка id из бд и id из redux state для проставки галочки прочтения
-        isMe={item.user._id === userId}
+        isMe={item.author._id === userId}
         currentDialogId={currentDialogId}
         {...item}
       />

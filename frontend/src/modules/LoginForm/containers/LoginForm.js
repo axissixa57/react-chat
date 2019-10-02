@@ -23,7 +23,10 @@ const LoginFormContainer = withFormik({
     const { fetchUserLogin } = props;
 
     fetchUserLogin(values)
-      .then(() => {
+      .then(({status}) => {
+        if(status === 'success') {
+          props.history.push("/im");
+        }
         setSubmitting(false);
       })
       .catch(() => {
