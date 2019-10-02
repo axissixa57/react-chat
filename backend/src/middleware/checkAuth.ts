@@ -1,7 +1,11 @@
-import { verifyJWTToken } from '../utils';
+import { verifyJWTToken } from "../utils";
 
 export default (req: any, res: any, next: any) => {
-  if (req.path === '/user/login' || req.path === '/user/registration') {
+  if (
+    req.path === "/user/login" ||
+    req.path === "/user/registration" ||
+    req.path === "/user/verify"
+  ) {
     return next();
   }
 
@@ -14,6 +18,6 @@ export default (req: any, res: any, next: any) => {
       next();
     })
     .catch(err => {
-      res.status(403).json({ message: 'Invalid auth token provided.' });
+      res.status(403).json({ message: "Invalid auth token provided." });
     });
 };

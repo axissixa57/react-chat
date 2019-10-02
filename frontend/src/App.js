@@ -5,11 +5,14 @@ import { Route, Redirect, Switch } from "react-router-dom";
 import { Auth, Home } from "./pages";
 
 const App = ({ isAuth }) => {
-  console.log(isAuth);
   return (
     <div className="wrapper">
       <Switch>
-        <Route exact path={["/", "/login", "/register"]} component={Auth} />
+        <Route
+          exact
+          path={["/login", "/register", "/register/verify"]}
+          component={Auth}
+        />
         <Route
           path="/"
           render={() => (isAuth ? <Home /> : <Redirect to="/login" />)}

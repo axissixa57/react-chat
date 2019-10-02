@@ -23,7 +23,7 @@ class UserController {
       }
       res.json(user);
     });
-  }
+  };
 
   getMe = (req: any, res: express.Response) => {
     const id: string = req.user._id;
@@ -38,16 +38,26 @@ class UserController {
   };
 
   create = (req: express.Request, res: express.Response) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
     const user = new UserModel(req.body);
+
     user
       .save()
       .then((obj: any) => {
         res.json(obj);
       })
       .catch(err => {
-        res.json(err);
+        res.status(500).json({
+          status: "error",
+          message: err
+        });
       });
-  }
+  };
 
   delete = (req: express.Request, res: express.Response) => {
     const id: string = req.params.id;
@@ -64,7 +74,7 @@ class UserController {
           message: `User not found`
         });
       });
-  }
+  };
 
   login = (req: express.Request, res: express.Response) => {
     const { email, password } = req.body;
@@ -75,7 +85,8 @@ class UserController {
     } // из документации
 
     UserModel.findOne({ email }, (err, user: any) => {
-      if (err || !user) { // если юзера нет в базе
+      if (err || !user) {
+        // если юзера нет в базе
         return res.status(404).json({
           message: "User not found"
         });
@@ -94,7 +105,42 @@ class UserController {
         });
       }
     });
-  }
+  };
+
+  verify = (req: express.Request, res: express.Response) => {
+    const hash = req.query.hash;
+
+    if (!hash) {
+      return res.status(422).json({ errors: "Invalid hash" });
+    }
+
+    UserModel.findOne(
+      { confirm_hash: hash },
+      (err, user) => {
+        if (err || !user) {
+          return res.status(404).json({
+            status: "error",
+            message: "Hash not found"
+          });
+        }
+
+        user.confirmed = true;
+        user.save(err => {
+          if (err) {
+            return res.status(404).json({
+              status: "error",
+              message: err
+            });
+          }
+  
+          res.json({
+            status: "success",
+            message: "Аккаунт успешно подтвержден!"
+          });
+        });
+      }
+    );
+  };
 }
 
 export default UserController;

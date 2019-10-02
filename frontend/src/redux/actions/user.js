@@ -59,6 +59,11 @@ const actions = {
           });
         }
       });
+  },
+  fetchUserRegister: postData => dispatch => {
+    return userApi.signUp(postData).then(({ data }) => {
+      return data;
+    });
   }
 };
 
