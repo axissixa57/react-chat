@@ -8,7 +8,7 @@ import "./Home.scss";
 
 const Home = () => (
   <section className="home">
-    <div className="chat"> 
+    <div className="chat">
       <div className="chat__sidebar">
         <div className="chat__sidebar-header">
           <div>
@@ -19,9 +19,7 @@ const Home = () => (
         </div>
 
         <div className="chat__sidebar-dialogs">
-          <Dialogs
-            userId={0}
-          />
+          <Dialogs userId={0} />
         </div>
       </div>
       <div className="chat__dialog">
@@ -39,7 +37,7 @@ const Home = () => (
           <Messages />
         </div>
         <div className="chat__dialog-input">
-            <ChatInput/>
+          <ChatInput />
         </div>
       </div>
     </div>

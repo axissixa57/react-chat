@@ -14,7 +14,13 @@ class DialogController {
     const authorId = req.user._id; // в checkAuth.js придёт объект пользователя
 
     DialogModel.find({ author: authorId })
-      .populate(["author", "partner"]) // по id author, partner в DialogModel найдет их объекты со всеми значениями
+      .populate(["author", "partner", "lastMessage"]) // по id author, partner в DialogModel найдет их объекты со всеми значениями
+      .populate({
+        path: 'lastMessage',
+        populate: {
+          path: 'user'
+        }
+      })
       .exec(function(err, dialogs) {
         if (err) {
           return res.status(404).json({
@@ -27,7 +33,7 @@ class DialogController {
 
   create = (req: express.Request, res: express.Response) => {
     const { author, partner, text } = req.body;
-    const dialog = new DialogModel({ author, partner }); // lastMessage: text
+    const dialog = new DialogModel({ author, partner });
 
     dialog
       .save()
@@ -41,6 +47,19 @@ class DialogController {
         message
           .save()
           .then(() => {
+            DialogModel.findOneAndUpdate(
+              { _id: dialog._id },
+              { lastMessage: message._id },
+              function(err) {
+                if (err) {
+                  return res.status(500).json({
+                    status: "error",
+                    message: err
+                  });
+                }
+              }
+            );
+
             res.json(dialogObj);
           })
           .catch(err => {

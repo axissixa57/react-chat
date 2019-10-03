@@ -2,14 +2,13 @@ import express from "express";
 import { UserModel } from "../models";
 
 export default ( // обновление последней даты посщения чата
-  req: express.Request,
+  req: any,
   res: express.Response,
   next: express.NextFunction
 ) => {
   UserModel.findOneAndUpdate(
-    { _id: "5d89ea61d8a3641e1cb73d51" },
+    { _id: req.user._id },
     {
-      fullname: "Dmitry Aksenov",
       last_seen: new Date()
     },
     { new: true },

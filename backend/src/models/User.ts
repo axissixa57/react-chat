@@ -2,6 +2,7 @@ import mongoose, { Schema, Document } from "mongoose";
 import { isEmail } from "validator";
 
 import { generatePasswordHash } from '../utils';
+import { differenceInMinutes, parseISO } from "date-fns";
 
 export interface IUser extends Document {
   email?: string;
@@ -45,6 +46,15 @@ const UserSchema = new Schema(
   }
 );
 
+UserSchema.set("toJSON", {
+  virtuals: true
+}); // для отображения виртуальных полей в response {..., "isOnline": true }
+
+UserSchema.virtual("isOnline").get(function(this: any) {
+  const dateToISO = new Date().toISOString();
+  return differenceInMinutes(parseISO(dateToISO), this.last_seen) < 5;
+}); // высчитываем разницу дат с настоящего времени и последнего посещения из бд в минутах, если меньше 5 минут, то false, иначе true
+
 UserSchema.pre('save', function(next) {
   const user: IUser = this;
 
@@ -57,7 +67,6 @@ UserSchema.pre('save', function(next) {
         user.confirm_hash = String(confirmHash);
         next();
       });
-      // next();
     })
     .catch(err => {
       next(err);

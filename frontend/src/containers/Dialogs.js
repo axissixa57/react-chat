@@ -26,7 +26,7 @@ const Dialogs = ({ items, userId, setCurrentDialogId, currentDialogId, fetchDial
     } else {
       setFiltredItems(items);
     }
-  }, [items, fetchDialogs]);
+  }, [items]);
 
   return (
     <BaseDialogs
