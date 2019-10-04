@@ -11,7 +11,7 @@ const Home = () => (
     <div className="chat">
       <div className="chat__sidebar">
         <div className="chat__sidebar-header">
-          <Menu/>
+          <Menu />
           <div>
             <Icon type="team" />
             <span>Список диалогов</span>
