@@ -15,7 +15,8 @@
       justify-content: space-between;
       padding: 21px;
       height: 58px;
-      border-bottom: 1px solid #f7f7f7;
+      border-right: 1px solid #6794ce;
+      border-bottom: 1px solid #6794ce;
       margin-bottom: 20px;
       align-items: center;
 
@@ -23,6 +24,10 @@
         // отступ слева лучше так, чем margin-left: 5px
         position: relative;
         left: 5px;
+      }
+
+      &-menu {
+        
       }
 
       & > div {
