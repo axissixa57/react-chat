@@ -15,7 +15,7 @@ class MessageController {
     const dialogId: string = req.query.dialog;
 
     MessageModel.find({ dialog: dialogId })
-      .populate(["dialog"])
+      .populate(["dialog", "user"])
       .exec(function(err, messages) {
         if (err) {
           return res.status(404).json({
@@ -27,12 +27,10 @@ class MessageController {
   };
 
   create = (req: any, res: express.Response) => {
-    const userId = req.user._id;
-
     const postData = {
       text: req.body.text,
       dialog: req.body.dialog_id,
-      user: userId
+      user: req.user._id
     };
 
     const message = new MessageModel(postData);

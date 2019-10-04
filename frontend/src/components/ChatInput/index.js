@@ -6,12 +6,19 @@ import { Picker } from "emoji-mart";
 
 import "./ChatInput.scss";
 
-const ChatInput = props => {
+const ChatInput = ({ fetchSendMessage, currentDialogId }) => {
   const [value, setValue] = useState("");
   const [emojiPickerVisible, setShowEmojiPicker] = useState(false);
 
   const toggleEmojiPicker = () => {
     setShowEmojiPicker(!emojiPickerVisible);
+  };
+
+  const handleSendMessage = e => {
+    if (e.keyCode === 13) { // на Enter
+      fetchSendMessage(value, currentDialogId);
+      setValue("");
+    }
   };
 
   return (
@@ -31,6 +38,8 @@ const ChatInput = props => {
       </div>
       <Input
         onChange={e => setValue(e.target.value)}
+        value={value}
+        onKeyUp={handleSendMessage}
         size="large"
         placeholder="Введите текст сообщения…"
       />

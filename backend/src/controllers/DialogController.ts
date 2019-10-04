@@ -9,16 +9,18 @@ class DialogController {
   constructor(io: socket.Server) {
     this.io = io;
   }
-  
-  index = (req: any, res: express.Response) => { // все диалоги пользователя по ид
-    const authorId = req.user._id; // в checkAuth.js придёт объект пользователя
 
-    DialogModel.find({ author: authorId })
+  index = (req: any, res: express.Response) => {
+    // все диалоги пользователя по ид
+    const userId = req.user._id; // в checkAuth.js придёт объект пользователя
+
+    DialogModel.find()
+      .or([{ author: userId }, { partner: userId }]) // поиск диалогов по автору или партнёру, если партнёр зайдёт в качестве юзера нужно искать по партнёру
       .populate(["author", "partner", "lastMessage"]) // по id author, partner в DialogModel найдет их объекты со всеми значениями
       .populate({
-        path: 'lastMessage',
+        path: "lastMessage",
         populate: {
-          path: 'user'
+          path: "user"
         }
       })
       .exec(function(err, dialogs) {
@@ -29,47 +31,69 @@ class DialogController {
         }
         return res.json(dialogs);
       });
-  }
+  };
 
-  create = (req: express.Request, res: express.Response) => {
-    const { author, partner, text } = req.body;
-    const dialog = new DialogModel({ author, partner });
+  create = (req: any, res: express.Response) => {
+    const postData = {
+      author: req.user._id,
+      partner: req.body.partner
+    };
 
-    dialog
-      .save()
-      .then((dialogObj: any) => {
-        const message = new MessageModel({
-          text,
-          user: author,
-          dialog: dialogObj._id
-        });
-
-        message
-          .save()
-          .then(() => {
-            DialogModel.findOneAndUpdate(
-              { _id: dialog._id },
-              { lastMessage: message._id },
-              function(err) {
-                if (err) {
-                  return res.status(500).json({
-                    status: "error",
-                    message: err
-                  });
-                }
-              }
-            );
-
-            res.json(dialogObj);
-          })
-          .catch(err => {
-            res.json(err);
+    DialogModel.findOne(
+      {
+        author: req.user._id,
+        partner: req.body.partner
+      },
+      (err, user) => {
+        if (err) {
+          return res.status(500).json({
+            status: "error",
+            message: err
           });
-      })
-      .catch(err => {
-        res.json(err);
-      });
-  }
+        }
+        if (user) {
+          return res.status(403).json({
+            status: "error",
+            message: "Такой диалог уже есть"
+          });
+        } else {
+          const dialog = new DialogModel(postData);
+
+          dialog
+            .save()
+            .then((dialogObj: any) => {
+              const message = new MessageModel({
+                text: req.body.text,
+                user: req.user._id,
+                dialog: dialogObj._id
+              });
+
+              message
+                .save()
+                .then(() => {
+                  dialogObj.lastMessage = message._id;
+                  dialogObj.save().then(() => {
+                    res.json(dialogObj);
+                    this.io.emit("SERVER:DIALOG_CREATED", {
+                      ...postData,
+                      dialog: dialogObj
+                    });
+                  });
+                })
+                .catch(reason => {
+                  res.json(reason);
+                });
+            })
+            .catch(err => {
+              res.json({
+                status: "error",
+                message: err
+              });
+            });
+        }
+      }
+    );
+  };
 
   delete = (req: express.Request, res: express.Response) => {
     const id: string = req.params.id;
@@ -86,7 +110,7 @@ class DialogController {
           message: `Dialog not found`
         });
       });
-  }
+  };
 }
 
 export default DialogController;

@@ -2,18 +2,27 @@ import React from "react";
 import className from "classnames";
 import format from "date-fns/format"; // Return the formatted date string in the given format.
 import isToday from "date-fns/isToday"; // Is the given date today?
+import { Link } from 'react-router-dom';
 
 import { IconReaded, Avatar } from "../";
 
 const getMessageTime = created_at => {
-  if (isToday(created_at)) { 
+  if (isToday(created_at)) {
     return format(created_at, "HH:mm");
   } else {
     return format(created_at, "dd.MM.yyyy");
   }
 };
 
-const DialogItem = ({ _id, unreaded, isMe, createdAt, text, onSelect, currentDialogId, lastMessage }) => (
+const DialogItem = ({
+  _id,
+  unreaded,
+  isMe,
+  onSelect,
+  currentDialogId,
+  lastMessage
+}) => (
+  <Link to={`/dialog/${_id}`}>
   <div
     className={className("dialogs__item", {
       "dialogs__item--online": lastMessage.user.isOnline,
@@ -40,6 +49,7 @@ const DialogItem = ({ _id, unreaded, isMe, createdAt, text, onSelect, currentDia
       </div>
     </div>
   </div>
+  </Link>
 );
 
 export default DialogItem;
