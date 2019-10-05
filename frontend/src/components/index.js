@@ -5,6 +5,7 @@ export { default as Button } from './Button';
 export { default as ChatInput } from './ChatInput';
 export { default as Dialogs } from './Dialogs';
 export { default as DialogItem } from './DialogItem';
+export { default as HumburgerMenu } from './HumburgerMenu';
 export { default as Menu } from './Menu';
 export { default as Message } from './Message';
 export { default as Messages } from './Messages';
