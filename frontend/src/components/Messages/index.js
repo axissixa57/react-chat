@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Empty, Spin } from "antd";
 import classNames from "classnames";
-import { Emoji } from 'emoji-mart';
 
 import "./Messages.scss";
 

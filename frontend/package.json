@@ -2,6 +2,12 @@
   "name": "react-chat-tutorial",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "node scripts/start.js",
+    "build": "node scripts/build.js",
+    "test": "node scripts/test.js",
+    "cleanall": "npm rebuild node-sass"
+  },
   "dependencies": {
     "@babel/core": "7.5.5",
     "@navjobs/upload": "^3.2.0",
@@ -17,6 +23,7 @@
     "babel-plugin-named-asset-import": "^0.3.3",
     "babel-preset-react-app": "^9.0.1",
     "bcrypt": "^3.0.6",
+    "bootstrap": "^4.3.1",
     "camelcase": "^5.2.0",
     "case-sensitive-paths-webpack-plugin": "2.2.0",
     "classnames": "^2.2.6",
@@ -77,11 +84,6 @@
     "webpack-dev-server": "3.2.1",
     "webpack-manifest-plugin": "2.0.4",
     "workbox-webpack-plugin": "4.3.1"
-  },
-  "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
   },
   "eslintConfig": {
     "extends": "react-app"
