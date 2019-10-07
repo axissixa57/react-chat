@@ -1,6 +1,8 @@
-﻿https://react-nodejs-mongodb-chat.herokuapp.com
-https://axissixa57.github.io/react-chat/
-
+Deployed on gh-pages: [React-chat](https://axissixa57.github.io/react-chat/)<br>
+For test: Email: alex@mail.ru / Password: 12345<br>
+Need to wait a couple of seconds until the server starts!<br>
+<hr>
+ 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
