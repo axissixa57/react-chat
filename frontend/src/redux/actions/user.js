@@ -57,6 +57,12 @@ const actions = {
             text: "Неверный логин или пароль",
             type: "error"
           });
+        } else if(response.status === 404) {
+          openNotification({
+            title: "Ошибка при авторизации",
+            text: "Пользователь не найден",
+            type: "error"
+          });
         }
       });
   },

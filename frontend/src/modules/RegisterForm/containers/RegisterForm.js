@@ -4,17 +4,15 @@ import { connect } from "react-redux";
 import RegisterForm from "../components/RegisterForm";
 import validateForm from "../../../utils/validate";
 import { userActions } from "../../../redux/actions";
+import { openNotification } from "../../../utils/helpers";
 
 const RegisterFormContainer = withFormik({
-  enableReinitialize: true,
-
   mapPropsToValues: () => ({
     email: "",
     fullname: "",
     password: "",
     password_2: ""
   }),
-  // values - это объект, кот. предоставляет Formik в нём хранится ключ - id inut-ов, значение - текст input-a (email, password)
   validate: values => {
     let errors = {};
     validateForm({ isAuth: false, values, errors });
@@ -27,8 +25,15 @@ const RegisterFormContainer = withFormik({
     fetchUserRegister(values)
       .then(({ status }) => {
         if (status === "success") {
-          props.history.push("/im");
+          openNotification({
+            title: "Отлично!",
+            text: "Регистрация успешна.",
+            type: "success"
+          });
+
+          props.history.push("/register/verify");
         }
+
         setSubmitting(false);
       })
       .catch(() => {

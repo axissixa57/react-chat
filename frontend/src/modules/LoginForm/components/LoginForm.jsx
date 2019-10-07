@@ -13,10 +13,9 @@ const LoginForm = props => {
     handleChange,
     handleBlur,
     handleSubmit,
-    isValid,
     isSubmitting
   } = props;
-  // вся форма заимствована из https://ant.design/components/form/ для неё необходимо делать классовую компоненту
+  
   return (
     <div>
       <div className="auth__top">
@@ -26,7 +25,7 @@ const LoginForm = props => {
       <Block>
         <Form onSubmit={handleSubmit} className="login-form">
           <Form.Item
-            /* hasFeedback отображает иконку в зависимости от validateStatus="success" */
+            /* hasFeedback отображает иконку в зависимости от validateStatus значения */
             validateStatus={validateField("email", touched, errors)}
             help={!touched.email ? "" : errors.email}
             hasFeedback
@@ -58,9 +57,7 @@ const LoginForm = props => {
             />
           </Form.Item>
           <Form.Item>
-            {/* если отправляется и есть ошибка, отобразит span */}
-            {isSubmitting && !isValid && <span>Ошибка!</span>}
-            <Button disabled={isSubmitting} onClick={handleSubmit} type="primary" size="large">
+            <Button htmlType="submit" disabled={isSubmitting} type="primary" size="large">
               Войти в аккаунт
             </Button>
           </Form.Item>

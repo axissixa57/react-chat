@@ -14,11 +14,8 @@ const RegisterForm = props => {
     handleChange,
     handleBlur,
     handleSubmit,
-    isValid,
     isSubmitting
   } = props;
-
-  // вся форма заимствована из https://ant.design/components/form/
 
   return (
     <div>
@@ -72,10 +69,9 @@ const RegisterForm = props => {
               values={values}
             />
             <Form.Item>
-              {isSubmitting && !isValid && <span>Ошибка!</span>}
               <Button
+                htmlType="submit"
                 disabled={isSubmitting}
-                onClick={handleSubmit}
                 type="primary"
                 size="large"
               >

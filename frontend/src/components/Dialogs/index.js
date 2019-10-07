@@ -15,7 +15,7 @@ const Dialogs = ({ items, userId, onSearch, inputValue, currentDialogId, onSelec
         onChange={e => onSearch(e.target.value)}
       />
     </div>
-    {items.length ? orderBy(items, ["created_at"], ["desc"]).map((
+    {items.length ? orderBy(items, ["createdAt"], ["asc"]).map((
       item // orderBy сортирует объекты по конкретному полю (можно несколько)
     ) => (
       <DialogItem

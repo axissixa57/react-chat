@@ -23,6 +23,12 @@ const actions = {
     type: "MESSAGES:SET_IS_LOADING",
     payload: bool
   }),
+  removeMessageById: id => dispatch => {
+    dispatch({
+      type: "MESSAGES:REMOVE_MESSAGE",
+      payload: id
+    });
+  },
   fetchMessages: dialogId => dispatch => {
     dispatch(actions.setIsLoading(true));
     messagesApi

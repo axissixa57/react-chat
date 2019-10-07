@@ -20,7 +20,6 @@ export default ({ isAuth, values, errors }) => {
       }
     },
     password_2: value => {
-        console.log(value)
       if (!isAuth && value !== values.password) {
         errors.password_2 = "Пароли не совпадают";
       } else if (!value) {

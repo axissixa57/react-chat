@@ -2,6 +2,7 @@
   "name": "react-chat-tutorial",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://axissixa57.github.io/react-chat/",
   "dependencies": {
     "@babel/core": "7.5.5",
     "@navjobs/upload": "^3.2.0",
@@ -80,7 +81,9 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "proxy": "http://localhost:3333",
   "eslintConfig": {

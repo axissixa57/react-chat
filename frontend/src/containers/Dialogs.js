@@ -8,22 +8,20 @@ import socket from "../core/socket";
 
 const Dialogs = ({
   items,
-  userId,
+  user,
   setCurrentDialogId,
   currentDialogId,
   fetchDialogs
 }) => {
-  // setCurrentDialogId, fetchDialogs - из dialogsActions
   const [inputValue, setValue] = useState(""); // state для отображения значения input-a ввода
-  const [filtred, setFiltredItems] = useState(Array.from(items)); // state для фильтрации значений из массива
+  const [filtred, setFiltredItems] = useState([...items]); // state для фильтрации значений из массива
 
   const onChangeInput = (value = "") => {
-    // e.target.value придёт сюда
     setFiltredItems(
       items.filter(
         dialog =>
           dialog.author.fullname.toLowerCase().indexOf(value.toLowerCase()) >=
-            0 || // indexOf - позиция символа
+            0 ||
           dialog.partner.fullname.toLowerCase().indexOf(value.toLowerCase()) >=
             0
       )
@@ -32,9 +30,7 @@ const Dialogs = ({
     setValue(value);
   };
 
-  const onNewDialog = () => {
-    fetchDialogs();
-  };
+  const onNewDialog = () => fetchDialogs();
 
   useEffect(() => {
     if (items.length) {
@@ -51,7 +47,7 @@ const Dialogs = ({
 
   return (
     <BaseDialogs
-      userId={userId}
+      userId={user && user._id}
       items={filtred}
       onSearch={onChangeInput}
       inputValue={inputValue}
@@ -61,8 +57,7 @@ const Dialogs = ({
   );
 };
 
-// с помощью деструктуризации достаём из глобального state.dialogs, далее из dialogs достаём items тоже через деструктуризацию
 export default connect(
-  ({ dialogs }) => dialogs,
+  ({ dialogs, user }) => ({items: dialogs.items, user: user.data}),
   dialogsActions
 )(Dialogs);

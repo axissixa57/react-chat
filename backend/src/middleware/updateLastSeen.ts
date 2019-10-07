@@ -1,19 +1,17 @@
 import express from "express";
 import { UserModel } from "../models";
 
-export default ( // обновление последней даты посщения чата
+export default async (
   req: any,
   res: express.Response,
   next: express.NextFunction
 ) => {
   if (req.user) {
-    UserModel.findOneAndUpdate(
+    await UserModel.findOneAndUpdate(
       { _id: req.user._id },
       {
         last_seen: new Date()
-      },
-      { new: true },
-      () => {}
+      }
     );
   }
   next();

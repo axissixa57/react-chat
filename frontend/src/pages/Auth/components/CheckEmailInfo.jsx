@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Result, Button } from "antd";
+import { Result, Button, Spin } from "antd";
 
 import { userApi } from "../../../utils/api";
 import { Block } from "../../../components";
@@ -13,8 +13,8 @@ const renderTextInfo = (hash, verified) => {
       };
     } else {
       return {
-        status: "error",
-        message: "Ошибка при подтверждении аккаунта!"
+        status: "loading",
+        message: "Загрузка..."
       };
     }
   } else {
@@ -27,7 +27,7 @@ const renderTextInfo = (hash, verified) => {
 
 const CheckEmailInfo = ({ location, history }, props) => {
   const [verified, setVerified] = useState(false);
-  const hash = location.search.split("hash=")[1]; // из url достаём hash "?hash=$2b$10$Vk0mYnor1IRxWg.rh3mH0.2HF2eWcSiF80QM3X31DPDNraMhMskLO"
+  const hash = location.search.split("hash=")[1]; // из url достаём hash "http://localhost:3000/register/verify?hash=$2b$10$jZiwNqv2cCtznSfemPw//OyyRtOD.na48yvJZtEKvVLvxBMcBPuDW"
   const info = renderTextInfo(hash, verified);
 
   useEffect(() => {
@@ -38,24 +38,30 @@ const CheckEmailInfo = ({ location, history }, props) => {
         }
       });
     }
-  });
+  }, []);
 
   return (
     <div>
       <Block>
-        <Result
-          status={info.status}
-          title={info.status === "success" ? "Готово!" : "Ошибка"}
-          subTitle={info.message}
-          extra={
-            info.status === "success" &&
-            verified && (
-              <Button type="primary" onClick={() => history.push("/login")}>
-                Войти
-              </Button>
-            )
-          }
-        />
+        {info.status === "loading" ? (
+          <div style={{display: 'flex', justifyContent: 'center'}}>
+            <Spin size="large" tip={info.message}/>
+          </div>
+        ) : (
+          <Result
+            status={info.status}
+            title={info.status === "success" ? "Готово!" : "Ошибка"}
+            subTitle={info.message}
+            extra={
+              info.status === "success" &&
+              verified && (
+                <Button type="primary" onClick={() => history.push("/login")}>
+                  Войти
+                </Button>
+              )
+            }
+          />
+        )}
       </Block>
     </div>
   );

@@ -6,7 +6,6 @@ import validateForm from "../../../utils/validate";
 import { userActions } from "../../../redux/actions";
 
 const LoginFormContainer = withFormik({
-  enableReinitialize: true,
   // пустые поля нужны для того чтобы когда делаем фокус на input-e, чтобы выскачила ошибка, без пустых полей будет как success
   mapPropsToValues: () => ({
     email: "",
@@ -25,7 +24,7 @@ const LoginFormContainer = withFormik({
     fetchUserLogin(values)
       .then(({status}) => {
         if(status === 'success') {
-          props.history.push("/im");
+          props.history.push("/");
         }
         setSubmitting(false);
       })

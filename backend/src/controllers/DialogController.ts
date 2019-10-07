@@ -36,13 +36,14 @@ class DialogController {
   create = (req: any, res: express.Response) => {
     const postData = {
       author: req.user._id,
-      partner: req.body.partner
+      partner: req.body.partner,
+      text: req.body.text
     };
 
     DialogModel.findOne(
       {
-        author: req.user._id,
-        partner: req.body.partner
+        author: postData.author,
+        partner: postData.partner
       },
       (err, user) => {
         if (err) {
@@ -57,15 +58,18 @@ class DialogController {
             message: "Такой диалог уже есть"
           });
         } else {
-          const dialog = new DialogModel(postData);
+          const dialog = new DialogModel({
+            author: postData.author,
+            partner: postData.partner
+          });
 
           dialog
             .save()
             .then((dialogObj: any) => {
               const message = new MessageModel({
-                text: req.body.text,
-                user: req.user._id,
-                dialog: dialogObj._id
+                user: postData.author,
+                dialog: dialogObj._id,
+                text: postData.text
               });
 
               message
@@ -74,10 +78,7 @@ class DialogController {
                   dialogObj.lastMessage = message._id;
                   dialogObj.save().then(() => {
                     res.json(dialogObj);
-                    this.io.emit("SERVER:DIALOG_CREATED", {
-                      ...postData,
-                      dialog: dialogObj
-                    });
+                    this.io.emit("SERVER:DIALOG_CREATED");
                   });
                 })
                 .catch(reason => {

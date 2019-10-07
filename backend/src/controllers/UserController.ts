@@ -37,6 +37,19 @@ class UserController {
     });
   };
 
+  findUsers = (req: any, res: express.Response) => {
+    const query: string = req.query.query;
+    UserModel.find()
+      .or([{ fullname: new RegExp(query, 'i') }, { email: new RegExp(query, 'i') }])
+      .then((users: any) => res.json(users))
+      .catch((err: any) => {
+        return res.status(404).json({
+          status: 'error',
+          message: err,
+        });
+      });
+  };
+
   create = (req: express.Request, res: express.Response) => {
     const errors = validationResult(req);
 
@@ -49,7 +62,9 @@ class UserController {
     user
       .save()
       .then((obj: any) => {
-        res.json(obj);
+        res.json({
+          status: "success"
+        });
       })
       .catch(err => {
         res.status(500).json({
