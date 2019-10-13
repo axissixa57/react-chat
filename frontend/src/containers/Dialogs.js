@@ -30,8 +30,6 @@ const Dialogs = ({
     setValue(value);
   };
 
-  const onNewDialog = () => fetchDialogs();
-
   useEffect(() => {
     if (items.length) {
       onChangeInput();
@@ -41,8 +39,12 @@ const Dialogs = ({
   useEffect(() => {
     fetchDialogs();
 
-    socket.on("SERVER:DIALOG_CREATED", onNewDialog);
-    return () => socket.removeListener("SERVER:DIALOG_CREATED", onNewDialog);
+    socket.on("SERVER:DIALOG_CREATED", fetchDialogs);
+    socket.on("SERVER:NEW_MESSAGE", fetchDialogs);
+    return () => {
+      socket.removeListener("SERVER:DIALOG_CREATED", fetchDialogs);
+      socket.removeListener('SERVER:NEW_MESSAGE', fetchDialogs);
+    };
   }, []);
 
   return (
@@ -58,6 +60,6 @@ const Dialogs = ({
 };
 
 export default connect(
-  ({ dialogs, user }) => ({items: dialogs.items, user: user.data}),
+  ({ dialogs, user }) => ({ items: dialogs.items, user: user.data }),
   dialogsActions
 )(Dialogs);

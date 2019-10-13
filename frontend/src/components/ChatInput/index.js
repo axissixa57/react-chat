@@ -7,6 +7,8 @@ import { Picker } from "emoji-mart";
 import "./ChatInput.scss";
 
 const ChatInput = ({ fetchSendMessage, currentDialogId }) => {
+  
+
   const [value, setValue] = useState("");
   const [emojiPickerVisible, setShowEmojiPicker] = useState(false);
 
@@ -21,12 +23,16 @@ const ChatInput = ({ fetchSendMessage, currentDialogId }) => {
     }
   };
 
+  const addEmoji = ({colons}) => {
+    setValue(`${value} ${colons}`.trim())
+  }
+
   return (
     <div className="chat-input">
       <div className="chat-input__smile-btn">
         {emojiPickerVisible && (
           <div className="chat-input__emoji-picker">
-            <Picker set="apple" />
+            <Picker onSelect={(emojiTag) => addEmoji(emojiTag)} set="apple" />
           </div>
         )}
         <Button

@@ -1,93 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { Popover, Button, Icon } from "antd";
+import { Popover, Button } from "antd";
+import reactStringReplace from 'react-string-replace';
+import { Emoji } from "emoji-mart";
 
-import waveSvg from "../../assets/img/wave.svg";
-import playSvg from "../../assets/img/play.svg";
-import pauseSvg from "../../assets/img/pause.svg";
-
-import { Time, IconReaded, Avatar } from "../";
-import { convertCurrentTime } from "../../utils/helpers";
+import { Time, IconReaded, Avatar, AudioMessage } from "../";
 
 import "./Message.scss";
-
-const MessageAudio = ({ audioSrc }) => {
-  const audioElem = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-
-  useEffect(() => {
-    audioElem.current.volume = "0.1";
-    audioElem.current.addEventListener(
-      "playing",
-      () => {
-        setIsPlaying(true);
-      },
-      false
-    );
-
-    audioElem.current.addEventListener(
-      "ended",
-      () => {
-        setIsPlaying(false);
-        setProgress(0);
-        setCurrentTime(0);
-      },
-      false
-    );
-
-    audioElem.current.addEventListener(
-      "pause",
-      () => {
-        setIsPlaying(false);
-      },
-      false
-    );
-
-    audioElem.current.addEventListener("timeupdate", () => {
-      const duration = (audioElem.current && audioElem.current.duration) || 0; // общее время аудио
-      setCurrentTime(audioElem.current.currentTime);
-      setProgress((audioElem.current.currentTime / duration) * 100);
-    });
-  }, []);
-
-  const togglePlay = () => {
-    if (!isPlaying) {
-      audioElem.current.play();
-    } else {
-      audioElem.current.pause();
-    }
-  };
-
-  return (
-    <div className="message__audio">
-      <audio ref={audioElem} src={audioSrc} preload="auto"></audio>
-      <div
-        className="message__audio-progress"
-        style={{ width: progress + "40%" }}
-      ></div>
-      <div className="message__audio-info">
-        <div className="message__audio-btn">
-          <button onClick={togglePlay}>
-            {isPlaying ? (
-              <img src={pauseSvg} alt="Pause svg" />
-            ) : (
-              <img src={playSvg} alt="Play svg" />
-            )}
-          </button>
-        </div>
-        <div className="message__audio-wave">
-          <img src={waveSvg} alt="Wave svg" />
-        </div>
-        <span className="message__audio-duration">
-          {convertCurrentTime(currentTime)}
-        </span>
-      </div>
-    </div>
-  );
-};
 
 const Message = ({
   avatar,
@@ -131,7 +51,7 @@ const Message = ({
           <div className="message__info">
             {(audio || text || isTyping) && ( // если есть текст сообщения или он печатается или аудио есть, то бабл (оболочка сообщения) - есть
               <div className="message__bubble">
-                {text && <p className="message__text">{text}</p>}
+                {text && <p className="message__text">{reactStringReplace(text, /:(.+?):/g, (match, i) => <Emoji emoji={match} set='apple' size={16}></Emoji>)}</p>}
                 {isTyping && (
                   <div className="message__typing">
                     <span />
@@ -139,7 +59,7 @@ const Message = ({
                     <span />
                   </div>
                 )}
-                {audio && <MessageAudio audioSrc={audio} />}
+                {audio && <AudioMessage audioSrc={audio} />}
               </div>
             )}
 

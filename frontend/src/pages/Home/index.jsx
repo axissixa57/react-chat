@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "antd";
 
 import { Messages, ChatInput, Status, Sidebar } from "../../containers";
 
@@ -8,13 +7,9 @@ import "./Home.scss";
 const Home = () => (
   <section className="home">
     <div className="chat">
-      <Sidebar/>
+      <Sidebar />
       <div className="chat__dialog">
-        <div className="chat__dialog-header">
-          <div />
-          <Status/>
-          <Button type="link" shape="circle" icon="ellipsis" />
-        </div>
+        <Status />
         <div className="chat__dialog-messages">
           <Messages />
         </div>
