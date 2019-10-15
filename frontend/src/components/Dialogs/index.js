@@ -6,7 +6,7 @@ import { DialogItem } from "../";
 
 import "./Dialogs.scss";
 
-const Dialogs = ({ items, userId, onSearch, inputValue, currentDialogId, onSelectDialog }) => (
+const Dialogs = ({ items, userId, onSearch, inputValue, currentDialogId }) => (
   <div className="dialogs">
     <div className="dialogs__search">
       <Input.Search
@@ -19,7 +19,6 @@ const Dialogs = ({ items, userId, onSearch, inputValue, currentDialogId, onSelec
       item // orderBy сортирует объекты по конкретному полю (можно несколько)
     ) => (
       <DialogItem
-        onSelect={onSelectDialog}
         key={item._id}
         // проверка id из бд и id из redux state для проставки галочки прочтения
         isMe={item.author._id === userId}

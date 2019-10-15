@@ -10,9 +10,12 @@ class MessageController {
     this.io = io;
   }
 
-  index = (req: express.Request, res: express.Response) => {
+  index = (req: any, res: express.Response) => {
     // поиск сообщений по кокретному id dialog
     const dialogId: string = req.query.dialog;
+    const userId = req.user._id;
+
+    this.updateReadedStatus(res, userId, dialogId);
 
     MessageModel.find({ dialog: dialogId })
       .populate(["dialog", "user"])
@@ -26,7 +29,9 @@ class MessageController {
       });
   };
 
-  create = (req: express.Request, res: express.Response) => {
+  create = (req: any, res: express.Response) => {
+    const userId = req.user._id;
+    
     const postData = {
       text: req.body.text,
       dialog: req.body.dialog_id,
@@ -69,7 +74,7 @@ class MessageController {
       });
   };
 
-  delete = (req: express.Request, res: express.Response) => {
+  delete = (req: any, res: express.Response) => {
     const id: string = req.query.id;
     const userId: string = req.user._id;
 
@@ -122,6 +127,21 @@ class MessageController {
         });
       }
     });
+  };
+
+  updateReadedStatus = (res: express.Response, userId: string, dialogId: string) => {
+    MessageModel.updateMany(
+      { dialog: dialogId, user: { $ne: userId } },
+      { $set: { read: true } },
+      (err: any) => {
+        if (err) {
+          return res.status(500).json({
+            status: 'error',
+            message: err,
+          });
+        }
+      },
+    );
   };
 }
 

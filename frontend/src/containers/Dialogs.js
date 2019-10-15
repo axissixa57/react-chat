@@ -6,13 +6,7 @@ import { Dialogs as BaseDialogs } from "../components";
 
 import socket from "../core/socket";
 
-const Dialogs = ({
-  items,
-  user,
-  setCurrentDialogId,
-  currentDialogId,
-  fetchDialogs
-}) => {
+const Dialogs = ({ items, user, currentDialogId, fetchDialogs }) => {
   const [inputValue, setValue] = useState(""); // state для отображения значения input-a ввода
   const [filtred, setFiltredItems] = useState([...items]); // state для фильтрации значений из массива
 
@@ -43,7 +37,7 @@ const Dialogs = ({
     socket.on("SERVER:NEW_MESSAGE", fetchDialogs);
     return () => {
       socket.removeListener("SERVER:DIALOG_CREATED", fetchDialogs);
-      socket.removeListener('SERVER:NEW_MESSAGE', fetchDialogs);
+      socket.removeListener("SERVER:NEW_MESSAGE", fetchDialogs);
     };
   }, []);
 
@@ -53,7 +47,6 @@ const Dialogs = ({
       items={filtred}
       onSearch={onChangeInput}
       inputValue={inputValue}
-      onSelectDialog={setCurrentDialogId}
       currentDialogId={currentDialogId}
     />
   );

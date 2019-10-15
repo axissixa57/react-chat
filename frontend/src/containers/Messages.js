@@ -6,11 +6,18 @@ import { messagesActions } from "../redux/actions";
 
 import { Messages as BaseMessages } from "../components";
 
-const Messages = ({ currentDialogId, fetchMessages, addMessage, items, isLoading, user, removeMessageById }) => {
+const Messages = ({
+  currentDialogId,
+  fetchMessages,
+  addMessage,
+  items,
+  isLoading,
+  user,
+  removeMessageById
+}) => {
   const messagesRef = useRef(null);
 
   const onNewMessage = data => {
-    console.log(data)
     addMessage(data);
   };
 
@@ -29,7 +36,13 @@ const Messages = ({ currentDialogId, fetchMessages, addMessage, items, isLoading
   }, [items]);
 
   return (
-    <BaseMessages blockRef={messagesRef} items={items} isLoading={isLoading} user={user} onRemoveMessage={removeMessageById} />
+    <BaseMessages
+      blockRef={messagesRef}
+      items={items}
+      isLoading={isLoading}
+      user={user}
+      onRemoveMessage={removeMessageById}
+    />
   );
 };
 

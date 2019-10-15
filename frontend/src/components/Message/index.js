@@ -15,7 +15,7 @@ const Message = ({
   text,
   date,
   isMe,
-  isReaded,
+  read,
   attachments,
   isTyping,
   audio,
@@ -31,7 +31,7 @@ const Message = ({
       })}
     >
       <div className="message__content">
-        <IconReaded isMe={isMe} isReaded={isReaded} />
+        <IconReaded isMe={isMe} isReaded={read} />
         <Popover
           content={
             <div>

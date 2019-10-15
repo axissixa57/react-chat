@@ -1,16 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
-import readedSvg from "../../assets/img/readed.svg";
-import noReadedSvg from "../../assets/img/noreaded.svg";
+import readSvg from "../../assets/img/read.svg";
+import unreadSvg from "../../assets/img/unread.svg";
 
 const IconReaded = ({ isMe, isReaded }) =>
   (isMe && // если это автор сообщения и сообщение прочитано, то 2 ковычки возле сообщения, не прочитано - одни
     (isReaded ? (
-      <img className="message__icon-readed" src={readedSvg} alt="Readed icon" />
+      <img className="message__icon-readed" src={readSvg} alt="Readed icon" />
     ) : (
       <img
         className="message__icon-readed message__icon-readed--no"
-        src={noReadedSvg}
+        src={unreadSvg}
         alt="No readed icon"
       />
     ))) ||
