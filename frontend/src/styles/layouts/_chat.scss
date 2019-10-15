@@ -83,9 +83,5 @@
         font-weight: 500;
       }
     }
-
-    &-messages {
-      height: calc(100% - 138px); // для того чтобы корректно вместился блок, кот. стоит после chat__dialog-messages
-    }
   }
 }

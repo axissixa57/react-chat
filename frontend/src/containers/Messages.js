@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 
 import socket from "../core/socket";
@@ -13,9 +13,19 @@ const Messages = ({
   items,
   isLoading,
   user,
-  removeMessageById
+  removeMessageById,
+  attachments
 }) => {
+  const [blockHeight, setBlockHeight] = useState(138);
   const messagesRef = useRef(null);
+
+  useEffect(() => {
+    if (attachments.length) {
+      setBlockHeight(252);
+    } else {
+      setBlockHeight(252);
+    }
+  }, [attachments]);
 
   const onNewMessage = data => {
     addMessage(data);
@@ -42,16 +52,18 @@ const Messages = ({
       isLoading={isLoading}
       user={user}
       onRemoveMessage={removeMessageById}
+      blockHeight={blockHeight}
     />
   );
 };
 
 export default connect(
-  ({ messages, dialogs, user }) => ({
+  ({ messages, dialogs, user, attachments }) => ({
     items: messages.items,
     currentDialogId: dialogs.currentDialogId,
     isLoading: messages.isLoading,
-    user: user.data
+    user: user.data,
+    attachments: attachments.items,
   }),
   messagesActions
 )(Messages);

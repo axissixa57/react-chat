@@ -10,7 +10,7 @@ import { dialogsActions } from "../../redux/actions";
 import "./Home.scss";
 
 const Home = props => {
-  const { setCurrentDialogId, currentDialogId, user } = props;
+  const { setCurrentDialogId, currentDialogId } = props;
 
   useEffect(() => {
     const { pathname } = props.location;
@@ -24,13 +24,15 @@ const Home = props => {
         <Sidebar />
         <div className="chat__dialog">
           <Status />
-          <div className="chat__dialog-messages">
-            {!currentDialogId ? (
+
+          {!currentDialogId ? (
+            <div className="chat__dialog-messages">
               <Empty description="Откройте диалог" />
-            ) : (
-              <Messages />
-            )}
-          </div>
+            </div>
+          ) : (
+            <Messages />
+          )}
+
           <div className="chat__dialog-input">
             <ChatInput />
           </div>

@@ -7,14 +7,13 @@ export interface IMessage extends Document {
   unread: boolean;
 }
 
-// TODO: Сделать аттач файлов
-// attachemets:
 const MessageSchema = new Schema(
   {
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
     text: { type: String, required: true }, 
     dialog: { type: Schema.Types.ObjectId, ref: "Dialog", required: true },
-    read: { type: Boolean, default: false }
+    read: { type: Boolean, default: false },
+    attachments: [{ type: Schema.Types.ObjectId, ref: 'UploadFile' }],
   },
   {
     timestamps: true

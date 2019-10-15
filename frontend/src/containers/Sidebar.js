@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
 import { userApi, dialogsApi } from "../utils/api";
 
 import { Sidebar } from "../components";
