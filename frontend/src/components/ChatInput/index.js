@@ -16,9 +16,12 @@ const ChatInput = ({
   handleSendMessage,
   sendMessage,
   attachments,
-  onSelectFiles
+  onSelectFiles,
+  onRecord,
+  isRecording,
+  onHideRecording
 }) => {
-    return (
+  return (
     <Fragment>
       <div className="chat-input">
         <div>
@@ -35,13 +38,27 @@ const ChatInput = ({
               icon="smile"
             />
           </div>
-          <Input
-            onChange={e => setValue(e.target.value)}
-            value={value}
-            onKeyUp={handleSendMessage}
-            size="large"
-            placeholder="Введите текст сообщения…"
-          />
+          {isRecording ? (
+            <div className="chat-input__record-status">
+              <i className="chat-input__record-status-bubble"></i>
+              Recording...
+              <Button
+                onClick={onHideRecording}
+                type="link"
+                shape="circle"
+                icon="close"
+                className="stop-recording"
+              />
+            </div>
+          ) : (
+            <Input
+              onChange={e => setValue(e.target.value)}
+              value={value}
+              onKeyUp={handleSendMessage}
+              size="large"
+              placeholder="Введите текст сообщения…"
+            />
+          )}
           <div className="chat-input__actions">
             <UploadField
               onFiles={onSelectFiles}
@@ -56,10 +73,22 @@ const ChatInput = ({
             >
               <Button type="link" shape="circle" icon="camera" />
             </UploadField>
-            {value ? (
-              <Button onClick={sendMessage} type="link" shape="circle" icon="check-circle" />
+            {isRecording || value ? (
+              <Button
+                onClick={sendMessage}
+                type="link"
+                shape="circle"
+                icon="check-circle"
+              />
             ) : (
-              <Button type="link" shape="circle" icon="audio" />
+              <div className="chat-input__record-btn">
+                <Button
+                  onClick={onRecord}
+                  type="link"
+                  shape="circle"
+                  icon="audio"
+                />
+              </div>
             )}
           </div>
         </div>

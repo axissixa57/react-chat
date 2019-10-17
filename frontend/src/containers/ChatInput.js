@@ -6,9 +6,18 @@ import { filesApi } from "../utils/api";
 import { ChatInput } from "../components";
 
 const ChatInputContainer = ({ fetchSendMessage, currentDialogId }) => {
+  window.navigator.getUserMedia =
+    window.navigator.getUserMedia ||
+    window.navigator.mozGetUserMedia ||
+    window.navigator.msGetUserMedia ||
+    window.navigator.webkitGetUserMedia;
+
   const [value, setValue] = useState("");
   const [emojiPickerVisible, setShowEmojiPicker] = useState(false);
   const [attachments, setAttachments] = useState([]);
+  const [isRecording, setIsRecording] = useState(false);
+  const [mediaRecorder, setMediaRecorder] = useState(null);
+  const [isLoading, setLoading] = useState(false);
 
   const toggleEmojiPicker = () => {
     setShowEmojiPicker(!emojiPickerVisible);
@@ -21,14 +30,24 @@ const ChatInputContainer = ({ fetchSendMessage, currentDialogId }) => {
   const handleSendMessage = e => {
     if (e.keyCode === 13) {
       // на Enter
-      fetchSendMessage(value, currentDialogId);
+      fetchSendMessage({
+        text: value,
+        dialogId: currentDialogId,
+        attachments: attachments.map(file => file.uid)
+      });
       setValue("");
+      setAttachments([]);
     }
   };
 
   const sendMessage = () => {
-    fetchSendMessage(value, currentDialogId);
+    fetchSendMessage({
+      text: value,
+      dialogId: currentDialogId,
+      attachments: attachments.map(file => file.uid)
+    });
     setValue("");
+    setAttachments([]);
   };
 
   const onSelectFiles = async files => {
@@ -68,6 +87,41 @@ const ChatInputContainer = ({ fetchSendMessage, currentDialogId }) => {
     setAttachments(uploaded);
   };
 
+  const onRecord = () => {
+    if (navigator.getUserMedia) {
+      navigator.getUserMedia({ audio: true }, onRecording, onError);
+    }
+  };
+
+  const onRecording = stream => {
+    const recorder = new MediaRecorder(stream);
+    setMediaRecorder(recorder);
+
+    recorder.start();
+
+    recorder.onstart = () => {
+      setIsRecording(true);
+    };
+
+    recorder.onstop = () => {
+      setIsRecording(false);
+    };
+
+    recorder.ondataavailable = e => {
+      const file = new File([e.data], "audio.webm");
+      setLoading(true);
+
+    };
+  };
+
+  const onError = err => {
+    console.log("The following error occured: " + err);
+  };
+
+  const onHideRecording = () => {
+    setIsRecording(false);
+  };
+
   return !currentDialogId ? null : (
     <ChatInput
       value={value}
@@ -79,6 +133,9 @@ const ChatInputContainer = ({ fetchSendMessage, currentDialogId }) => {
       sendMessage={sendMessage}
       attachments={attachments}
       onSelectFiles={onSelectFiles}
+      onRecord={onRecord}
+      isRecording={isRecording}
+      onHideRecording={onHideRecording}
     />
   );
 };
