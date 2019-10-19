@@ -1,10 +1,8 @@
 import express from "express";
 import socket from "socket.io";
-import multer from "multer";
-
 import { updateLastSeen, checkAuth } from "../middleware";
 import { loginValidation, registerValidation } from "../utils/validations";
-import uploader from './uploader'
+import multer from './multer'
 
 import { UserCtrl, DialogCtrl, MessageCtrl, UploadFileCtrl } from "../controllers";
 
@@ -34,7 +32,7 @@ const createRoutes = (app: express.Express, io: socket.Server) => {
   app.post("/messages", MessageController.create);
   app.delete("/messages", MessageController.delete);
 
-  app.post("/files", uploader.single("file"), UploadFileController.create);
+  app.post("/files", multer.single("file"), UploadFileController.create);
   app.delete("/files", UploadFileController.delete);
 };
 

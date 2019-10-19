@@ -29,7 +29,22 @@ const ChatInputContainer = ({ fetchSendMessage, currentDialogId }) => {
 
   const handleSendMessage = e => {
     if (e.keyCode === 13) {
-      // на Enter
+      if(value || attachments.length) {
+        fetchSendMessage({
+          text: value,
+          dialogId: currentDialogId,
+          attachments: attachments.map(file => file.uid)
+        });
+        setValue("");
+        setAttachments([]);
+      }
+    }
+  };
+
+  const sendMessage = () => {
+    if (isRecording) {
+      mediaRecorder.stop();
+    } else if (value || attachments.length) {
       fetchSendMessage({
         text: value,
         dialogId: currentDialogId,
@@ -38,16 +53,6 @@ const ChatInputContainer = ({ fetchSendMessage, currentDialogId }) => {
       setValue("");
       setAttachments([]);
     }
-  };
-
-  const sendMessage = () => {
-    fetchSendMessage({
-      text: value,
-      dialogId: currentDialogId,
-      attachments: attachments.map(file => file.uid)
-    });
-    setValue("");
-    setAttachments([]);
   };
 
   const onSelectFiles = async files => {
@@ -103,14 +108,20 @@ const ChatInputContainer = ({ fetchSendMessage, currentDialogId }) => {
       setIsRecording(true);
     };
 
-    recorder.onstop = () => {
+    recorder.onstop = () => { // сработает, когда вызовится mediaRecorder.stop(), следом выполнится событие ondataavailable
       setIsRecording(false);
     };
 
-    recorder.ondataavailable = e => {
+    recorder.ondataavailable = (e) => {
       const file = new File([e.data], "audio.webm");
+      
       setLoading(true);
 
+      filesApi.upload(file).then(({ data }) => {
+        sendAudio(data.file._id).then(() => {
+          setLoading(false);
+        });
+      });
     };
   };
 
@@ -120,6 +131,14 @@ const ChatInputContainer = ({ fetchSendMessage, currentDialogId }) => {
 
   const onHideRecording = () => {
     setIsRecording(false);
+  };
+
+  const sendAudio = audioId => {
+    return fetchSendMessage({
+      text: null,
+      dialogId: currentDialogId,
+      attachments: [audioId]
+    });
   };
 
   return !currentDialogId ? null : (
@@ -136,6 +155,7 @@ const ChatInputContainer = ({ fetchSendMessage, currentDialogId }) => {
       onRecord={onRecord}
       isRecording={isRecording}
       onHideRecording={onHideRecording}
+      isLoading={isLoading}
     />
   );
 };

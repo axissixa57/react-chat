@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Empty, Spin } from "antd";
+import { Empty, Spin, Modal } from "antd";
 import classNames from "classnames";
 
 import "./Messages.scss";
@@ -13,7 +13,9 @@ const Messages = ({
   blockRef,
   user,
   onRemoveMessage,
-  blockHeight
+  blockHeight,
+  previewImage,
+  setPreviewImage
 }) => {
   return (
     <div
@@ -28,14 +30,17 @@ const Messages = ({
           <Spin size="large" tip="Загрузка сообщений..."></Spin>
         ) : items && !isLoading ? ( // если загрузка не идёт (false) и есть сообщения
           items.length > 0 ? (
-            items.map(item => (
-              <Message
-                key={item._id}
-                isMe={user._id === item.user._id}
-                onRemoveMessage={onRemoveMessage.bind(this, item._id)}
-                {...item}
-              />
-            ))
+            items.map(item => {
+              return (
+                <Message
+                  key={item._id}
+                  isMe={user._id === item.user._id}
+                  onRemoveMessage={onRemoveMessage.bind(this, item._id)}
+                  setPreviewImage={setPreviewImage}
+                  {...item}
+                />
+              );
+            })
           ) : (
             <Empty description="Диалог пуст" />
           )
@@ -43,6 +48,13 @@ const Messages = ({
           // если нет сообщений
           <Empty description="Откройте диалог" />
         )}
+        <Modal
+          visible={!!previewImage}
+          onCancel={() => setPreviewImage(null)}
+          footer={null}
+        >
+          <img style={{ width: "100%" }} src={previewImage} alt="Preview"></img>
+        </Modal>
       </div>
     </div>
   );

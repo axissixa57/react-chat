@@ -19,7 +19,8 @@ const ChatInput = ({
   onSelectFiles,
   onRecord,
   isRecording,
-  onHideRecording
+  onHideRecording,
+  isLoading
 }) => {
   return (
     <Fragment>
@@ -73,7 +74,9 @@ const ChatInput = ({
             >
               <Button type="link" shape="circle" icon="camera" />
             </UploadField>
-            {isRecording || value ? (
+            {isLoading ? (
+              <Button type="link" shape="circle" icon="loading" />
+            ) : isRecording || value || attachments.length ? (
               <Button
                 onClick={sendMessage}
                 type="link"

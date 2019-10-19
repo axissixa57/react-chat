@@ -1,16 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import { Popover, Button } from "antd";
-import reactStringReplace from 'react-string-replace';
+import { Popover, Button, Icon } from "antd";
+import reactStringReplace from "react-string-replace";
 import { Emoji } from "emoji-mart";
 
 import { Time, IconReaded, Avatar, AudioMessage } from "../";
+import { isAudio } from "../../utils/helpers";
 
 import "./Message.scss";
 
 const Message = ({
-  avatar,
   user,
   text,
   date,
@@ -18,16 +18,39 @@ const Message = ({
   read,
   attachments,
   isTyping,
-  audio,
-  onRemoveMessage
+  onRemoveMessage,
+  setPreviewImage
 }) => {
+  const renderAttachment = item => {
+    if (item.ext !== "webm") {
+      return (
+        <div
+          key={item._id}
+          onClick={() => setPreviewImage(item.url)}
+          className="message__attachments-item"
+        >
+          <div className="message__attachments-item-overlay">
+            <Icon type="eye" style={{ color: "white", fontSize: 18 }} />
+          </div>
+          <img src={item.url} alt={item.filename} />
+        </div>
+      );
+    } else {
+      return <AudioMessage key={item._id} audioSrc={item.url} />;
+    }
+  };
+
   return (
     <div
       className={classNames("message", {
         "message--isme": isMe,
         "message--is-typing": isTyping,
-        "message--image": attachments && attachments.length === 1 && !text,
-        "message--is-audio": audio
+        "message--is-audio": isAudio(attachments),
+        "message--image":
+          !isAudio(attachments) &&
+          attachments &&
+          attachments.length === 1 &&
+          !text
       })}
     >
       <div className="message__content">
@@ -49,9 +72,15 @@ const Message = ({
         </div>
         <div>
           <div className="message__info">
-            {(audio || text || isTyping) && ( // если есть текст сообщения или он печатается или аудио есть, то бабл (оболочка сообщения) - есть
+            {(text || isTyping) && ( // если есть текст сообщения или он печатается или аудио есть, то бабл (оболочка сообщения) - есть
               <div className="message__bubble">
-                {text && <p className="message__text">{reactStringReplace(text, /:(.+?):/g, (match, i) => <Emoji emoji={match} set='apple' size={16}></Emoji>)}</p>}
+                {text && (
+                  <p className="message__text">
+                    {reactStringReplace(text, /:(.+?):/g, (match, i) => (
+                      <Emoji key={i} emoji={match} set="apple" size={16}></Emoji>
+                    ))}
+                  </p>
+                )}
                 {isTyping && (
                   <div className="message__typing">
                     <span />
@@ -59,17 +88,13 @@ const Message = ({
                     <span />
                   </div>
                 )}
-                {audio && <AudioMessage audioSrc={audio} />}
+                {false && <AudioMessage audioSrc={null} />}
               </div>
             )}
 
             {attachments && (
               <div className="message__attachments">
-                {attachments.map((item, index) => (
-                  <div key={index} className="message__attachments-item">
-                    <img src={item.url} alt={item.filename} />
-                  </div>
-                ))}
+                {attachments.map(item => renderAttachment(item))}
               </div>
             )}
 

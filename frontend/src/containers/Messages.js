@@ -17,6 +17,7 @@ const Messages = ({
   attachments
 }) => {
   const [blockHeight, setBlockHeight] = useState(138);
+  const [previewImage, setPreviewImage] = useState(null);
   const messagesRef = useRef(null);
 
   useEffect(() => {
@@ -53,6 +54,8 @@ const Messages = ({
       user={user}
       onRemoveMessage={removeMessageById}
       blockHeight={blockHeight}
+      setPreviewImage={setPreviewImage}
+      previewImage={previewImage}
     />
   );
 };
