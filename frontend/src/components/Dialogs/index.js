@@ -23,6 +23,7 @@ const Dialogs = ({ items, userId, onSearch, inputValue, currentDialogId }) => (
         // проверка id из бд и id из redux state для проставки галочки прочтения
         isMe={item.author._id === userId}
         currentDialogId={currentDialogId}
+        userId={userId}
         {...item}
       />
     )) : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Ничего не найдено" />}

@@ -45,6 +45,7 @@ const UploadFiles = ({ attachments, removeAttachment }) => {
         fileList={state.fileList}
         onPreview={handlePreview}
         onChange={handleChange}
+        onRemove={file => removeAttachment(file)}
       ></Upload>
       <Modal
         visible={state.previewVisible}

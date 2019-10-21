@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import socket from "../core/socket";
 
-import { messagesActions } from "../redux/actions";
+import { messagesActions, attachmentsActions } from "../redux/actions";
 import { filesApi } from "../utils/api";
 import { ChatInput } from "../components";
 
-const ChatInputContainer = ({ fetchSendMessage, currentDialogId }) => {
+const ChatInputContainer = ({
+  fetchSendMessage,
+  currentDialogId,
+  attachments,
+  setAttachments,
+  removeAttachment,
+  user
+}) => {
   window.navigator.getUserMedia =
     window.navigator.getUserMedia ||
     window.navigator.mozGetUserMedia ||
@@ -14,7 +22,6 @@ const ChatInputContainer = ({ fetchSendMessage, currentDialogId }) => {
 
   const [value, setValue] = useState("");
   const [emojiPickerVisible, setShowEmojiPicker] = useState(false);
-  const [attachments, setAttachments] = useState([]);
   const [isRecording, setIsRecording] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [isLoading, setLoading] = useState(false);
@@ -28,8 +35,10 @@ const ChatInputContainer = ({ fetchSendMessage, currentDialogId }) => {
   };
 
   const handleSendMessage = e => {
+    socket.emit("DIALOGS:TYPING", { dialogId: currentDialogId, user });
+
     if (e.keyCode === 13) {
-      if(value || attachments.length) {
+      if (value || attachments.length) {
         fetchSendMessage({
           text: value,
           dialogId: currentDialogId,
@@ -108,13 +117,14 @@ const ChatInputContainer = ({ fetchSendMessage, currentDialogId }) => {
       setIsRecording(true);
     };
 
-    recorder.onstop = () => { // сработает, когда вызовится mediaRecorder.stop(), следом выполнится событие ondataavailable
+    recorder.onstop = () => {
+      // сработает, когда вызовится mediaRecorder.stop(), следом выполнится событие ondataavailable
       setIsRecording(false);
     };
 
-    recorder.ondataavailable = (e) => {
+    recorder.ondataavailable = e => {
       const file = new File([e.data], "audio.webm");
-      
+
       setLoading(true);
 
       filesApi.upload(file).then(({ data }) => {
@@ -156,11 +166,16 @@ const ChatInputContainer = ({ fetchSendMessage, currentDialogId }) => {
       isRecording={isRecording}
       onHideRecording={onHideRecording}
       isLoading={isLoading}
+      removeAttachment={removeAttachment}
     />
   );
 };
 
 export default connect(
-  ({ dialogs }) => dialogs,
-  messagesActions
+  ({ dialogs, attachments, user }) => ({
+    currentDialogId: dialogs.currentDialogId,
+    attachments: attachments.items,
+    user: user.data
+  }),
+  { ...messagesActions, ...attachmentsActions }
 )(ChatInputContainer);

@@ -10,7 +10,7 @@ import { dialogsActions } from "../../redux/actions";
 import "./Home.scss";
 
 const Home = props => {
-  const { setCurrentDialogId, currentDialogId } = props;
+  const { setCurrentDialogId, currentDialogId, user } = props;
 
   useEffect(() => {
     const { pathname } = props.location;
@@ -22,21 +22,23 @@ const Home = props => {
     <section className="home">
       <div className="chat">
         <Sidebar />
-        <div className="chat__dialog">
-          <Status />
+        {user && (
+          <div className="chat__dialog">
+            <Status />
 
-          {!currentDialogId ? (
-            <div className="chat__dialog-messages">
-              <Empty description="Откройте диалог" />
+            {!currentDialogId ? (
+              <div className="chat__dialog-messages">
+                <Empty description="Откройте диалог" />
+              </div>
+            ) : (
+              <Messages/>
+            )}
+
+            <div className="chat__dialog-input">
+              <ChatInput />
             </div>
-          ) : (
-            <Messages />
-          )}
-
-          <div className="chat__dialog-input">
-            <ChatInput />
           </div>
-        </div>
+        )}
       </div>
     </section>
   );
@@ -46,7 +48,7 @@ export default compose(
   connect(
     ({ user, dialogs }) => ({
       user: user.data,
-      currentDialogId: dialogs.currentDialogId
+      currentDialogId: dialogs.currentDialogId,
     }),
     dialogsActions
   ),

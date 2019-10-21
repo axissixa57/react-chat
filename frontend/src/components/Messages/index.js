@@ -15,7 +15,9 @@ const Messages = ({
   onRemoveMessage,
   blockHeight,
   previewImage,
-  setPreviewImage
+  setPreviewImage,
+  partner,
+  isTyping
 }) => {
   return (
     <div
@@ -26,7 +28,7 @@ const Messages = ({
         ref={blockRef} // т.к. блок с классом messages имеет scroll, то им можно манипулировать
         className={classNames("messages", { "messages--loading": isLoading })}
       >
-        {isLoading ? ( // загрузка идёт (true) и сообщений нет - идёт загрузка
+        {isLoading && !user ? ( // загрузка идёт (true) и сообщений нет - идёт загрузка
           <Spin size="large" tip="Загрузка сообщений..."></Spin>
         ) : items && !isLoading ? ( // если загрузка не идёт (false) и есть сообщения
           items.length > 0 ? (
@@ -48,6 +50,7 @@ const Messages = ({
           // если нет сообщений
           <Empty description="Откройте диалог" />
         )}
+        {isTyping && <Message isTyping={true} user={partner} />}
         <Modal
           visible={!!previewImage}
           onCancel={() => setPreviewImage(null)}
